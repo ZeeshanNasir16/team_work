@@ -1,0 +1,21 @@
+{
+  "extends": ["airbnb", "prettier", "plugin:node/recommended"],
+  "engine": {
+    "node": ">=14.18.0"
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    // "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "no-console": "off",
+    "no-unused-vars": "warn",
+    "vars-on-top": "off",
+    "prefer-const": "off",
+    "func-names": "off",
+    "no-process-exit": "off",
+    "consistent-return": "off",
+    "prefer-destructuring": "warn",
+    "no-underscore-dangle": "off",
+    "arrow-body-style": "off",
+    "no-useless-return": "off"
+  }
+}
