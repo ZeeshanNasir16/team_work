@@ -1,0 +1,218 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Complete login and signup System",
+    "description": "It is complete login and signup system with proper validation and error handling, implemented with nodejs, express, javascript and mysql"
+  },
+  "servers": [
+    { "url": "http://localhost:5000/", "description": "SWAGGER HOST" }
+  ],
+  "tags": [
+    {
+      "name": "Login & Signup system",
+      "description": "API for login & signup system"
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/signup": {
+      "post": {
+        "tags": ["User Signup"],
+        "summary": "register a new user in the system",
+        "requestBody": {
+          "description": "Employee Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/signUp"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": { "description": "New Employee Created" },
+          "400": { "description": "Failed. Bad post data." },
+          "404": {
+            "description": "server cannot find the requested resource."
+          },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["User Login"],
+        "summary": "login a user in the system",
+        "requestBody": {
+          "description": "Employee Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/logIn"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": { "description": "User login successfully" },
+          "400": { "description": "Failed. Bad post data." },
+          "404": {
+            "description": "server cannot find the requested resource."
+          },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/forget": {
+      "post": {
+        "tags": ["User Forget Password"],
+        "summary": "send email to user with reset password link/token",
+        "requestBody": {
+          "description": "Employee Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/forgetPassword"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": { "description": "New Employee Created" },
+          "400": { "description": "Failed. Bad post data." },
+          "404": {
+            "description": "server cannot find the requested resource."
+          },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/reset": {
+      "post": {
+        "tags": ["User Reset Password"],
+        "summary": "reset password based upon token provided in the email",
+        "requestBody": {
+          "description": "Employee Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/resetPassword"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": { "description": "New Employee Created" },
+          "400": { "description": "Failed. Bad post data." },
+          "404": {
+            "description": "server cannot find the requested resource."
+          },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/file/upload": {
+      "post": {
+        "tags": ["User Single File Upload"],
+        "summary": "Uploads a file.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/uploadFile"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": { "description": "File has been upload" },
+          "400": { "description": "Failed. Bad post data." },
+          "404": {
+            "description": "server cannot find the requested resource."
+          },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "signUp": {
+        "required": ["email", "confirm_password", "password", "cnic"],
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "example": "asif-mehmood@hotmail.com" },
+          "confirm_password": { "type": "string", "example": "asifmehmooD123" },
+          "password": { "type": "string", "example": "asifmehmooD123" },
+          "cnic": {
+            "type": "string",
+            "format": "varchar(13)",
+            "example": "3740561125275"
+          }
+        },
+
+        "xml": { "name": "emp" }
+      },
+      "logIn": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "example": "asif" },
+          "password": { "type": "string", "example": "asif@email.com" }
+        },
+
+        "xml": { "name": "emp2" }
+      },
+      "forgetPassword": {
+        "required": ["email"],
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "example": "asif-mehmood@hotmail.com" }
+        },
+
+        "xml": { "name": "emp" }
+      },
+      "resetPassword": {
+        "required": ["token", "confirm_password", "password"],
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "token that is sent to your email"
+          },
+          "confirm_password": { "type": "string", "example": "asifmehmooD123" },
+          "password": { "type": "string", "example": "asifmehmooD123" }
+        },
+
+        "xml": { "name": "emp" }
+      },
+      "uploadFile": {
+        "required": ["file"],
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "example": "file"
+          }
+        }
+      }
+    }
+  }
+}
