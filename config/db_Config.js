@@ -14,4 +14,4 @@ async function QueryDB(sql, params = []) {
   return rows;
 }
 
-module.exports = QueryDB;
+module.exports = { QueryDB, connection };
