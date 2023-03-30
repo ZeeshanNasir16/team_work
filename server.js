@@ -8,6 +8,7 @@ const AppError = require('./utils/appError');
 const swaggerUi = require('swagger-ui-express');
 const logger = require('./utils/logger');
 swaggerDocument = require('./swagger/swagger.json');
+const users = require('./route/users');
 
 /**********************POST API ************************** */
 app.use(express.json());
@@ -22,6 +23,8 @@ app.get('/api', (req, res) => {
     message: 'Server have received the request',
   });
 });
+
+app.use('/', users);
 
 /***********************************Swagger API Testing******************* */
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

@@ -1,6 +1,8 @@
 const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+dotenv.config();
 
-export default function SendMail(email, subject, htmlMessage) {
+exports.SendMail = (email, subject, htmlMessage) => {
   const transporter = nodemailer.createTransport({
     host: process.env.NM_HOST,
     port: process.env.NM_PORT,
@@ -18,4 +20,4 @@ export default function SendMail(email, subject, htmlMessage) {
   };
 
   return transporter.sendMail(mailOptions);
-}
+};
