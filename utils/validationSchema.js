@@ -10,7 +10,6 @@ exports.signupSchema = Joi.object({
     .length(10)
     .pattern(/^[0-9]+$/)
     .required(),
-  // password: Joi.string().min(10).required().label('password'),
   password: joiPassword
     .string()
     .minOfSpecialCharacters(1)

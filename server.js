@@ -8,7 +8,7 @@ const AppError = require('./utils/appError');
 const swaggerUi = require('swagger-ui-express');
 const logger = require('./utils/logger');
 swaggerDocument = require('./swagger/swagger.json');
-const users = require('./route/users');
+const users = require('./route/userRoutes');
 
 /**********************POST API ************************** */
 app.use(express.json());

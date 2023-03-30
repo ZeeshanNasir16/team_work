@@ -1,4 +1,4 @@
-const { signupSchema } = require('../utils/userSchema');
+const { signupSchema } = require('../utils/validationSchema');
 
 exports.signupValidation = (req, res, next) => {
   const value = signupSchema.validate(req.body);
