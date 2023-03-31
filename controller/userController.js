@@ -7,6 +7,46 @@ const {
 const logger = require('../utils/logger');
 const { SendMail } = require('../utils/SendMail');
 
+/**
+ * @swagger
+ * components:
+ *    schemas:
+ *        User:
+ *            type: object
+ *            properties:
+ *                first_name:
+ *                    type: string
+ *                last_name:
+ *                    type: string
+ *                email:
+ *                    type: string
+ *                mobile_no:
+ *                    type: string
+ *                password:
+ *                    type: string
+ *                confirm_password:
+ *                    type: string
+ *                user_type_id:
+ *                    type: integer
+ */
+
+/**
+ * @swagger
+ * /users/register:
+ *  post:
+ *      summary: SignUp user
+ *      description: this api is used to add user data to database
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                   schema:
+ *                       $ref: '#components/schemas/User'
+ *      responses:
+ *          200:
+ *              description: user Signup successfully...
+ */
+
 exports.signUpUser = async (req, res) => {
   try {
     registration_data = req.body;
