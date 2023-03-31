@@ -1,19 +1,20 @@
 const UserModel = require('../model/userModel');
-const { signUpSubject, signUpHtml, signUpFrom } = require('../utils/emailMsgs');
+const {
+  signUpSubject: subject,
+  signUpHtml,
+  signUpFrom: from,
+} = require('../utils/emailMsgs');
 const logger = require('../utils/logger');
 const { SendMail } = require('../utils/SendMail');
 
-exports.signUpUsr = async (req, res) => {
+exports.signUpUser = async (req, res) => {
   try {
     registration_data = req.body;
 
     await UserModel.createUser(registration_data);
 
     const { email } = req.body;
-    const from = signUpFrom;
-    const subject = signUpSubject;
-    const htmlMessage = signUpHtml(email);
-    const sent = await SendMail(from, email, subject, htmlMessage);
+    const sent = await SendMail(from, email, subject, signUpHtml(email));
 
     let isEmailSent = sent.response.includes('250');
 

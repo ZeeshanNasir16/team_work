@@ -25,5 +25,5 @@ exports.signupSchema = Joi.object({
     .messages({
       'any.only': 'Passwords do not match',
     }),
-  usrType: Joi.number().integer().min(2).max(3),
+  user_type_id: Joi.number().integer().min(2).max(3),
 });

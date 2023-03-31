@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const UserModel = {
   createUser: async (registration_data) => {
-    const { first_name, last_name, email, mobile_no, password, usrType } =
+    const { first_name, last_name, email, mobile_no, password, user_type_id } =
       registration_data;
 
     registration_data.password = await bcrypt.hash(password, 13);
@@ -14,7 +14,7 @@ const UserModel = {
       email,
       mobile_no,
       registration_data.password,
-      usrType,
+      user_type_id,
     ];
 
     return QueryDB(
