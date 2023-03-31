@@ -13,7 +13,7 @@ exports.SendMail = (email, subject, htmlMessage) => {
   });
 
   var mailOptions = {
-    from: '"Employees-CRUD (sample)" <testingmail@example.app>',
+    from: process.env.NM_USER,
     to: email,
     subject: subject,
     html: htmlMessage,

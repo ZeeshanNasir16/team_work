@@ -1,12 +1,17 @@
 const UserModel = require('../model/userModel');
-// const { SendMail } = require('../utils/SendMail');
+const { SendMail } = require('../utils/SendMail');
 exports.signUpUsr = async (req, res) => {
   try {
-    registration_data = req.body;
+    let registration_data = req.body;
 
     await UserModel.createUser(registration_data);
 
     //send email here response:250 = success or response:OK= success
+    await SendMail(
+      req.body.email,
+      'Sign up Successfully.',
+      `<h1>you are successfully sign up</h1>`
+    );
 
     return res.status(200).json({
       status: 'success',
