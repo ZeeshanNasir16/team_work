@@ -1,7 +1,6 @@
 const QueryDB = require('../config/db_Config');
-
 const UserModel = {
-  getAll: () => QueryDB('Select * from employees'),
+  login: (email) => QueryDB('Select * from users where email = ?', [email]),
 };
 
 module.exports = UserModel;
