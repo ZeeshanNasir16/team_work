@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const dotenv = require('dotenv');
+const _ = require('dotenv').config();
+
 const GlobalErrorMiddleware = require('./middleware/globalErrorMiddleware');
 const AppError = require('./utils/appError');
 
@@ -16,7 +17,6 @@ const userRoutes = require('./route/userRoutes');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-dotenv.config();
 
 /***********************************Swagger API Testing******************* */
 const options = {
@@ -39,12 +39,14 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ^ Routes
-app.get('/api', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Server have received the request',
-  });
-});
+// app.get('/api', (req, res) => {
+//   res.status(200).json({
+//     status: 'success',
+//     message: 'Server have received the request',
+//   });
+// });
+
+app.use('/api/users', userRouter);
 
 app.use('/users', userRoutes);
 

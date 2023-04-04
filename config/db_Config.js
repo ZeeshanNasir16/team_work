@@ -1,6 +1,4 @@
 const mysql2 = require('mysql2/promise');
-const dotenv = require('dotenv');
-dotenv.config();
 
 const options = {
   host: process.env.HOST,

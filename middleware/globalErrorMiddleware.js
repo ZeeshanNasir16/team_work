@@ -1,4 +1,3 @@
-// import logger from '../utils/logger.js';
 const logger = require('../utils/logger');
 
 function GlobalErrorMiddleware(error, _, res, _next) {
