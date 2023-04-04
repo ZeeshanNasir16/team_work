@@ -1,35 +1,90 @@
-const UserModel = require('../model/user');
-const AppError = require('../utils/appError');
-const catchAsync = require('../utils/catchAsync');
+const UserModel = require('../model/userModel');
+const {
+  signUpSubject: subject,
+  signUpHtml,
+  signUpFrom: from,
+} = require('../utils/emailMsgs');
 const logger = require('../utils/logger');
-const HTTPCodes = require('../utils/responses');
+const { SendMail } = require('../utils/SendMail');
 
-exports.getAllUsers = async (req, res, next) => {
+/**
+ * @swagger
+ * components:
+ *    schemas:
+ *        User:
+ *            type: object
+ *            properties:
+ *                first_name:
+ *                    type: string
+ *                    example: "asif"
+ *                last_name:
+ *                    type: string
+ *                    example: "mehmood"
+ *                email:
+ *                    type: string
+ *                    example: "asif-mehmood@hotmail.com"
+ *                mobile_no:
+ *                    type: string
+ *                    example: "1234567890"
+ *                password:
+ *                    type: string
+ *                    example: "asifM@12345"
+ *                confirm_password:
+ *                    type: string
+ *                    example: "asifM@12345"
+ *                user_type_id:
+ *                    type: integer
+ *                    example: "2"
+ */
+
+/**
+ * @swagger
+ * /users/register:
+ *  post:
+ *      summary: SignUp user
+ *      description: this api is used to add user data to database
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                   schema:
+ *                       $ref: '#components/schemas/User'
+ *      responses:
+ *          200:
+ *              description: user Signup successfully...
+ */
+
+exports.signUpUser = async (req, res) => {
   try {
-    const users = await UserModel.getAll();
+    const registration_data = req.body;
 
-    if (users.length === 0)
-      return next(new AppError(HTTPCodes.NOT_FOUND, 'No record found'));
+    await UserModel.createUser(registration_data);
 
-    res.status(HTTPCodes.OK).json({
-      status: 'success',
-      users,
-    });
-  } catch (er) {
-    res.status(HTTPCodes.SERVER_ERROR).json({
-      status: 'failed',
-      message: er.message,
+    const { email } = req.body;
+    const sent = await SendMail(from, email, subject, signUpHtml(email));
+
+    let isEmailSent = sent.response.includes('250');
+
+    if (isEmailSent) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'User signup successfully and email is sent to user',
+      });
+    }
+  } catch (error) {
+    logger.error(error.message);
+    if (error.errno === -4039) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Email did not sent to the user due to connection error',
+        errorMessage: error.message,
+      });
+    }
+    return res.status(404).json({
+      status: 'fail',
+      message:
+        'You Entered existing or incorrect data or something unexpected happened',
+      errorMessage: error.message,
     });
   }
 };
-
-exports.getUsersOnly = catchAsync(async (req, res, next) => {
-  const users = await UserModel.getUsers();
-  if (users.length === 0)
-    return next(new AppError(HTTPCodes.NOT_FOUND, 'No record found'));
-
-  res.status(HTTPCodes.OK).json({
-    status: 'success',
-    users,
-  });
-});

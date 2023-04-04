@@ -6,15 +6,37 @@ const _ = require('dotenv').config();
 const GlobalErrorMiddleware = require('./middleware/globalErrorMiddleware');
 const AppError = require('./utils/appError');
 
-const swaggerUi = require('swagger-ui-express');
+// const swaggerUi = require('swagger-ui-express');
 const logger = require('./utils/logger');
-const userRouter = require('./route/User');
-swaggerDocument = require('./swagger/swagger.json');
+// swaggerDocument = require('./swagger/swagger.json');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const userRoutes = require('./route/userRoutes');
 
 /**********************POST API ************************** */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+/***********************************Swagger API Testing******************* */
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'node js api endpoint',
+      version: '1.0.0',
+    },
+    servers: [
+      {
+        url: `http://${process.env.HOST}:${process.env.PORT}/`,
+      },
+    ],
+  },
+  apis: [`./controller/userController.js`],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ^ Routes
 // app.get('/api', (req, res) => {
@@ -26,8 +48,7 @@ app.use(cors());
 
 app.use('/api/users', userRouter);
 
-/***********************************Swagger API Testing******************* */
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/users', userRoutes);
 
 //^ handling all unhandled routes
 app.all('*', (req, _, next) => {
