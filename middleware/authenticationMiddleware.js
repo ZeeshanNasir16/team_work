@@ -17,16 +17,20 @@ module.exports = function verifyToken(req,res,next) {
         if(!err){
             console.log(decoded)
             if(decoded.id == 1){
-                res.status(HTTPCodes.OK).
-                json({message: 'You are authorized'});
+                // res.status(HTTPCodes.OK).
+                // json({message: 'You are authorized'});
+                console.log(" You're Authorized ")
+                next()
                 
             }else{
                 res.status(HTTPCodes.NOT_AUTHORIZED).
                 json({message: 'You are Not authorized'});
             }    
-        }  
+        }
+        else{  
         res.status(HTTPCodes.NOT_AUTHORIZED).
-        json({message: 'You are Not authorized'});      
+        json({message: 'You are Not authorized'});
+      }      
       });
 }
 
