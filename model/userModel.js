@@ -1,6 +1,11 @@
 const QueryDB = require('../config/db_Config');
 const bcrypt = require('bcrypt');
 
+
+exports.login = (email) => { 
+return QueryDB('Select * from users where email = ?', [email]);
+}
+
 exports.createUser = async (registration_data) => {
   const { first_name, last_name, email, mobile_no, password, user_type_id } =
     registration_data;

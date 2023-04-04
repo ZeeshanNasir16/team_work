@@ -3,15 +3,14 @@ const app = express();
 const cors = require('cors');
 const _ = require('dotenv').config();
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const logger = require('./utils/logger');
+
 const GlobalErrorMiddleware = require('./middleware/globalErrorMiddleware');
 const AppError = require('./utils/appError');
 
-// const swaggerUi = require('swagger-ui-express');
-const logger = require('./utils/logger');
-// swaggerDocument = require('./swagger/swagger.json');
-const swaggerJSDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const userRoutes = require('./route/userRoutes');
+const userRoutes = require('./route/userRoutes.js');
 
 /**********************POST API ************************** */
 app.use(express.json());
@@ -32,19 +31,11 @@ const options = {
       },
     ],
   },
-  apis: [`./controller/userController.js`],
+  apis: [`./controller/*.js`],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-// ^ Routes
-// app.get('/api', (req, res) => {
-//   res.status(200).json({
-//     status: 'success',
-//     message: 'Server have received the request',
-//   });
-// });
 
 app.use('/users', userRoutes);
 

@@ -57,12 +57,9 @@ const { SendMail } = require('../utils/SendMail');
 exports.signUpUser = async (req, res) => {
   try {
     const registration_data = req.body;
-
     await UserModel.createUser(registration_data);
-
     const { email } = req.body;
     const sent = await SendMail(from, email, subject, signUpHtml(email));
-
     let isEmailSent = sent.response.includes('250');
 
     if (isEmailSent) {

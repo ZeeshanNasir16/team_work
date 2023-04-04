@@ -1,6 +1,4 @@
 const nodemailer = require('nodemailer');
-const dotenv = require('dotenv');
-dotenv.config();
 
 exports.SendMail = (from, email, subject, htmlMessage) => {
   const transporter = nodemailer.createTransport({
@@ -11,13 +9,11 @@ exports.SendMail = (from, email, subject, htmlMessage) => {
       pass: process.env.NM_PASS,
     },
   });
-
   var mailOptions = {
     from: from,
     to: email,
     subject: subject,
     html: htmlMessage,
   };
-
   return transporter.sendMail(mailOptions);
 };

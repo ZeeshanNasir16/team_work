@@ -8,6 +8,7 @@ const options = {
 };
 
 async function QueryDB(sql, params = []) {
+  console.log("inside querydb")
   const connection = await mysql2.createConnection(options);
   const [rows] = await connection.execute(sql, params);
   return rows;
