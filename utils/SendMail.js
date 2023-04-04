@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-module.exports = function SendMail(email, subject, htmlMessage) {
+exports.SendMail = (from, email, subject, htmlMessage) => {
   const transporter = nodemailer.createTransport({
     host: process.env.NM_HOST,
     port: process.env.NM_PORT,
@@ -9,13 +9,11 @@ module.exports = function SendMail(email, subject, htmlMessage) {
       pass: process.env.NM_PASS,
     },
   });
-
   var mailOptions = {
-    from: '"Employees-CRUD (sample)" <testingmail@example.app>',
+    from: from,
     to: email,
     subject: subject,
     html: htmlMessage,
   };
-
   return transporter.sendMail(mailOptions);
-}
+};

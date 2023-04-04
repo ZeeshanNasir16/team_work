@@ -41,22 +41,14 @@ const { signToken } = require('../utils/createToken.js');
 
 exports.adminLogin = async (req, res, next) => {
   const [result] = await UserModel.login(req.body.email);
-  console.log(result);
   if (!result) {
     return res.status(HTTPCodes.NOT_FOUND).json({
       status: 'success',
       message: 'User not found with this email.',
     });
   }
-  const token = signToken(result.user_type_id);
-  res.set('Authorization', `Bearer ${token}`);
-  return res.status(HTTPCodes.OK).json({
-    status: 'success',
-    message: 'User Logged In',
-  });
 
   bcrypt.compare(req.body.password, result.password, function (err, result) {
-    console.log(result);
     if (result) {
       logger.info('Logged in successfully');
       const token = signToken(result.user_type_id);
@@ -70,5 +62,4 @@ exports.adminLogin = async (req, res, next) => {
       status: 'failed',
       message: 'Incorrect Password',
     });
-  });
 };
