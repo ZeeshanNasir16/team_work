@@ -54,6 +54,25 @@ const { SendMail } = require('../utils/SendMail');
  *              description: user Signup successfully...
  */
 
+/**
+ * @swagger
+ * /users/createUser:
+ *  post:
+ *      security:
+ *        - bearerAuth: []
+ *      summary: Create user
+ *      description: this api is used to add user data to database
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                   schema:
+ *                       $ref: '#components/schemas/User'
+ *      responses:
+ *          200:
+ *              description: user Register successfully...
+ */
+
 exports.signUpUser = async (req, res) => {
   try {
     const registration_data = req.body;

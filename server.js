@@ -30,6 +30,18 @@ const options = {
         url: `http://${process.env.HOST}:${process.env.PORT}/`,
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: {
+      bearerAuth: [],
+    },
   },
   apis: [`./controller/*.js`],
 };
