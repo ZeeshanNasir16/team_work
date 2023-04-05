@@ -14,7 +14,12 @@ userRouter.post(
   validationMiddleware(loginSchema),
   adminController.adminLogin
 );
-userRouter.post('/createUser', verifyToken, userController.signUpUser);
+userRouter.post(
+  '/createUser',
+  verifyToken,
+  validation.signupValidation,
+  userController.signUpUser
+);
 userRouter.post(
   '/register',
   validation.signupValidation,
