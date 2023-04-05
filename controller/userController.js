@@ -16,18 +16,25 @@ const { SendMail } = require('../utils/SendMail');
  *            properties:
  *                first_name:
  *                    type: string
+ *                    example: "asif"
  *                last_name:
  *                    type: string
+ *                    example: "mehmood"
  *                email:
  *                    type: string
+ *                    example: "asif-mehmood@hotmail.com"
  *                mobile_no:
  *                    type: string
+ *                    example: "1234567890"
  *                password:
  *                    type: string
+ *                    example: "asifM@12345"
  *                confirm_password:
  *                    type: string
+ *                    example: "asifM@12345"
  *                user_type_id:
  *                    type: integer
+ *                    example: "2"
  */
 
 /**
@@ -49,7 +56,7 @@ const { SendMail } = require('../utils/SendMail');
 
 exports.signUpUser = async (req, res) => {
   try {
-    registration_data = req.body;
+    const registration_data = req.body;
 
     await UserModel.createUser(registration_data);
 
@@ -66,7 +73,13 @@ exports.signUpUser = async (req, res) => {
     }
   } catch (error) {
     logger.error(error.message);
-
+    if (error.errno === -4039) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Email did not sent to the user due to connection error',
+        errorMessage: error.message,
+      });
+    }
     return res.status(404).json({
       status: 'fail',
       message:
