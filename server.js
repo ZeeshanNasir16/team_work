@@ -1,30 +1,55 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const dotenv = require('dotenv');
+const _ = require('dotenv').config();
+
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const logger = require('./utils/logger');
+
 const GlobalErrorMiddleware = require('./middleware/globalErrorMiddleware');
 const AppError = require('./utils/appError');
 
-const swaggerUi = require('swagger-ui-express');
-const logger = require('./utils/logger');
-swaggerDocument = require('./swagger/swagger.json');
+const userRoutes = require('./route/userRoutes.js');
 
 /**********************POST API ************************** */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-dotenv.config();
-
-// ^ Routes
-app.get('/api', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Server have received the request',
-  });
-});
 
 /***********************************Swagger API Testing******************* */
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'node js api endpoint',
+      version: '1.0.0',
+    },
+    servers: [
+      {
+        url: `http://${process.env.HOST}:${process.env.PORT}/`,
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: {
+      bearerAuth: [],
+    },
+  },
+  apis: [`./controller/*.js`],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use('/users', userRoutes);
 
 //^ handling all unhandled routes
 app.all('*', (req, _, next) => {
