@@ -19,7 +19,7 @@ exports.createRole = async (req, res) => {
 
 exports.getAllRoles = async (req, res) => {
   try {
-    const results = await roleModel.getAllRoles(); // dont use [results]
+    const results = await roleModel.getAllRoles();
     res.status(200).json({
       status: 'success',
       message: 'View all roles',
@@ -37,7 +37,7 @@ exports.getAllRoles = async (req, res) => {
 exports.getRolebyId = async (req, res) => {
   const roleId = req.params.id;
   try {
-    const results = await roleModel.getRoleById(roleId); // dont use [results]
+    const results = await roleModel.getRoleById(roleId);
     res.status(200).json({
       status: 'success',
       message: 'View Role by ID',
