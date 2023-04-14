@@ -113,6 +113,34 @@ roleRouter.get('/getRoleById/:id', roleController.getRolebyId);
 
 roleRouter.put('/updateRole/:id', roleController.updateRole);
 
+/**
+ * @swagger
+ * /user/deleteRole/{id}:
+ *  delete:
+ *      summary: Delete User
+ *      description: this api is used to delete user data from database
+ *      tags:
+ *          - Roles API
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            description: Numeric ID required
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description:    Role is deleted successfully
+ *          400:
+ *              description:    Bad request
+ *          404:
+ *              description:    Server does not found resource
+ *          500:
+ *              description:    Internal Server Error
+ */
+
+roleRouter.delete('/deleteRole/:id', roleController.deleteRole);
+
 module.exports = roleRouter;
 
 /*************************Swagger Schema*************************** */

@@ -15,3 +15,7 @@ exports.getRoleById = (roleId) => {
 exports.updateRole = (type, roleId) => {
   return QueryDB('Update user_types SET type=? where id=? ', [type, roleId]);
 };
+
+exports.deleteRole = (roleId) => {
+  return QueryDB('Delete from user_types where id=? ', [roleId]);
+};
