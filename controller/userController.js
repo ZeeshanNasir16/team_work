@@ -1,4 +1,5 @@
 const UserModel = require('../model/userModel');
+const catchAsync = require('../utils/catchAsync');
 const {
   signUpSubject: subject,
   signUpHtml,
@@ -104,3 +105,40 @@ exports.signUpUser = async (req, res) => {
     });
   }
 };
+
+exports.getUsers = catchAsync(async (req, res) => {
+  const result = await UserModel.getAllUsers();
+
+  if (result.length > 0) {
+    res.json({ success: true, payload: result });
+  } else {
+    res.json({ success: false, message: 'no record available to show...' });
+  }
+});
+
+exports.getSingleUser = catchAsync(async (req, res) => {
+  const result = await UserModel.getSingleUser(req.params.userId);
+  if (result.length > 0) {
+    res.json({ success: true, payload: result });
+  } else {
+    res.json({ success: false, message: 'record does not exist.' });
+  }
+});
+
+exports.deleteUser = catchAsync(async (req, res) => {
+  const result = await UserModel.deleteUser(req.params.userId);
+  if (result.affectedRows > 0) {
+    res.json({ success: true, payload: result });
+  } else {
+    res.json({ success: false, message: 'user does not exist.' });
+  }
+});
+
+exports.updateUser = catchAsync(async (req, res) => {
+  console.log('data to be updated : ', req.body);
+  console.log('data of to be updated : ', req.params);
+  const result = await UserModel.updateUser(req.body, req.params.userId);
+
+  res.json({ success: true, payload: result });
+  // res.json({ success: true });
+});
