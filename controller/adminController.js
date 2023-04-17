@@ -40,7 +40,7 @@ const { signToken } = require('../utils/createToken.js');
  */
 
 exports.adminLogin = async (req, res, next) => {
-  const [resp] = await UserModel.login(req.body.email);
+  const resp = await UserModel.login(req.body.email);
   console.log('Model result :', resp);
   if (!resp)
     return res.status(HTTPCodes.NOT_FOUND).json({
@@ -48,11 +48,11 @@ exports.adminLogin = async (req, res, next) => {
       message: 'User not found with this email.',
     });
 
-  bcrypt.compare(req.body.password, resp.password, function (err, result) {
+  bcrypt.compare(req.body.password, resp[0].password, function (err, result) {
     if (result) {
       console.log('resp data : ', resp);
       logger.info('Logged in successfully');
-      const token = signToken(resp.user_type_id);
+      const token = signToken(resp[0].user_type_id);
       res.set('Authorization', `Bearer ${token}`);
       return res.status(HTTPCodes.OK).json({
         status: 'success',

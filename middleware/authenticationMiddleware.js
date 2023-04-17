@@ -17,8 +17,9 @@ module.exports = function verifyToken(req,res,next) {
         logger.info("decoded: ", decoded)
         if(!err){
             logger.info(decoded)
-            if(decoded.id == 1){
+            if(decoded.id == 1 || decoded.id == 2 || decoded.id == 3){
                 logger.info(" You're Authorized ")
+                req.loggedInUser = decoded.id;
                 next()
             }else{
                 res.status(HTTPCodes.NOT_AUTHORIZED).
