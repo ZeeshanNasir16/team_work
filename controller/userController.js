@@ -42,6 +42,8 @@ const { SendMail } = require('../utils/SendMail');
  * @swagger
  * /users/register:
  *  post:
+ *      tags:
+ *        - auth
  *      summary: SignUp user
  *      description: this api is used to add user data to database
  *      requestBody:
@@ -59,6 +61,8 @@ const { SendMail } = require('../utils/SendMail');
  * @swagger
  * /users/createUser:
  *  post:
+ *      tags:
+ *        - auth
  *      security:
  *        - bearerAuth: []
  *      summary: Create user
@@ -106,6 +110,23 @@ exports.signUpUser = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /users/getUsers:
+ *  get:
+ *    summary: Getting all users
+ *    tags:
+ *      - Users (CRUD)
+ *    description: this api will get all user data
+ *    responses:
+ *         200:
+ *             content:
+ *                 application/json:
+ *                     schema:
+ *                         type: array
+ *                         items:
+ *                             $ref: '#components/schemas/User'
+ */
 exports.getUsers = catchAsync(async (req, res) => {
   const result = await UserModel.getAllUsers();
 
@@ -116,6 +137,30 @@ exports.getUsers = catchAsync(async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/getUserById/{userId}:
+ *  get:
+ *    summary: Getting selected user
+ *    tags:
+ *      - Users (CRUD)
+ *    description: this api will get selected user
+ *    parameters:
+ *        - in: path
+ *          name: userId
+ *          required: true
+ *          description: Numeric Id required
+ *          schema:
+ *            type: integer
+ *    responses:
+ *         200:
+ *             content:
+ *                 application/json:
+ *                     schema:
+ *                         type: array
+ *                         items:
+ *                             $ref: '#components/schemas/User'
+ */
 exports.getSingleUser = catchAsync(async (req, res) => {
   const result = await UserModel.getSingleUser(req.params.userId);
   if (result.length > 0) {
@@ -124,6 +169,26 @@ exports.getSingleUser = catchAsync(async (req, res) => {
     res.json({ success: false, message: 'record does not exist.' });
   }
 });
+
+/**
+ * @swagger
+ * /users/deleteUser/{userId}:
+ *  delete:
+ *    summary: Delete User
+ *    tags:
+ *      - Users (CRUD)
+ *    description: this api will delete selected user
+ *    parameters:
+ *        - in: path
+ *          name: userId
+ *          required: true
+ *          description: Numeric Id required
+ *          schema:
+ *            type: integer
+ *    responses:
+ *         200:
+ *            description: user removed successfully...
+ */
 
 exports.deleteUser = catchAsync(async (req, res) => {
   const result = await UserModel.deleteUser(req.params.userId);
@@ -134,11 +199,38 @@ exports.deleteUser = catchAsync(async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/updateUser/{userId}:
+ *  patch:
+ *    summary: Update User
+ *    tags:
+ *      - Users (CRUD)
+ *    description: this api will update selected user
+ *    parameters:
+ *        - in: path
+ *          name: userId
+ *          required: true
+ *          description: Numeric Id required
+ *          schema:
+ *            type: integer
+ *    requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                    schema:
+ *                        $ref: '#components/schemas/User'
+ *    responses:
+ *         200:
+ *             content:
+ *                 application/json:
+ *                     schema:
+ *                         type: array
+ *                         items:
+ *                             $ref: '#components/schemas/User'
+ */
 exports.updateUser = catchAsync(async (req, res) => {
-  console.log('data to be updated : ', req.body);
-  console.log('data of to be updated : ', req.params);
   const result = await UserModel.updateUser(req.body, req.params.userId);
 
   res.json({ success: true, payload: result });
-  // res.json({ success: true });
 });
