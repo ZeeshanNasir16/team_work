@@ -56,7 +56,7 @@ exports.updateRole = async (req, res) => {
   const roleId = req.params.id;
   const { type } = req.body;
   try {
-    await roleModel.updateRole(type, roleId);
+    const results = await roleModel.updateRole(type, roleId);
     if (results.affectedRows === 0) {
       return res.status(400).json({
         status: 'fail',

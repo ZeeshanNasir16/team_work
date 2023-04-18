@@ -100,6 +100,13 @@ roleRouter.get('/getRoleById/:id', roleController.getRolebyId);
  *            schema:
  *              type: integer
  *
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                   schema:
+ *                       $ref: '#components/schemas/Update'
+ *
  *      responses:
  *          200:
  *              description:    Role is updated successfully
@@ -155,6 +162,18 @@ module.exports = roleRouter;
  *                id:
  *                    type: integer
  *                    example: "ID will be number"
+ *                type:
+ *                    type: string
+ *                    example: "enter user type e.g admin/users/member/staff"
+ */
+
+/**
+ * @swagger
+ * components:
+ *    schemas:
+ *        Update:
+ *            type: object
+ *            properties:
  *                type:
  *                    type: string
  *                    example: "enter user type e.g admin/users/member/staff"
