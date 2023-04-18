@@ -51,15 +51,14 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/users', userRoutes);
-
-app.use('/user', roleRoutes);
+app.use('/roles', roleRoutes);
 
 //^ handling all unhandled routes
 app.all('*', (req, _, next) => {
   next(new AppError(404, `Can't find ${req.originalUrl} on the server`));
 });
 
-// ^ error handling middleware
+// error handling middleware
 app.use(GlobalErrorMiddleware);
 
 const port = process.env.port || 5000;
