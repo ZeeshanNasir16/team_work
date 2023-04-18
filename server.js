@@ -11,7 +11,9 @@ const GlobalErrorMiddleware = require('./middleware/globalErrorMiddleware');
 const AppError = require('./utils/appError');
 
 const userRoutes = require('./route/userRoutes.js');
+const rolePermissionRoutes = require('./route/rolePermissionRoutes');
 const permRoutes = require('./route/permissionRoutes.js');
+
 
 /**********************POST API ************************** */
 app.use(express.json());
@@ -51,7 +53,9 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/users', userRoutes);
+app.use('/rolePermission', rolePermissionRoutes);
 app.use('/permissions', permRoutes);
+
 
 // handling all unhandled routes
 app.all('*', (req, _, next) => {
