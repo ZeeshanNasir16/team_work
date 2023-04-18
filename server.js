@@ -52,7 +52,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/users', userRoutes);
 
-app.use('/user', roleRoutes);
+app.use('/roles', roleRoutes);
 
 //^ handling all unhandled routes
 app.all('*', (req, _, next) => {

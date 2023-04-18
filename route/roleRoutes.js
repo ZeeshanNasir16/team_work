@@ -4,7 +4,7 @@ const roleRouter = express.Router();
 
 /**
  * @swagger
- * /user/createRole:
+ * /roles/createRole:
  *  post:
  *      summary: create Role
  *      tags:
@@ -32,7 +32,7 @@ roleRouter.post('/createRole', roleController.createRole);
 
 /**
  * @swagger
- * /user/getAllRoles:
+ * /roles/getAllRoles:
  *  get:
  *      summary: get all roles
  *      tags:
@@ -58,7 +58,7 @@ roleRouter.get('/getAllRoles', roleController.getAllRoles);
 
 /**
  * @swagger
- * /user/getRoleById/{id}:
+ * /roles/getRoleById/{id}:
  *  get:
  *      summary: get single role
  *      tags:
@@ -86,7 +86,7 @@ roleRouter.get('/getRoleById/:id', roleController.getRolebyId);
 
 /**
  * @swagger
- * /user/updateRole/{id}:
+ * /roles/updateRole/{id}:
  *  put:
  *      summary: update Role
  *      tags:
@@ -105,7 +105,7 @@ roleRouter.get('/getRoleById/:id', roleController.getRolebyId);
  *          content:
  *              application/json:
  *                   schema:
- *                       $ref: '#components/schemas/Update'
+ *                       $ref: '#components/schemas/Roles'
  *
  *      responses:
  *          200:
@@ -122,7 +122,7 @@ roleRouter.put('/updateRole/:id', roleController.updateRole);
 
 /**
  * @swagger
- * /user/deleteRole/{id}:
+ * /roles/deleteRole/{id}:
  *  delete:
  *      summary: Delete User
  *      description: this api is used to delete user data from database
@@ -157,21 +157,6 @@ module.exports = roleRouter;
  * components:
  *    schemas:
  *        Roles:
- *            type: object
- *            properties:
- *                id:
- *                    type: integer
- *                    example: "ID will be number"
- *                type:
- *                    type: string
- *                    example: "enter user type e.g admin/users/member/staff"
- */
-
-/**
- * @swagger
- * components:
- *    schemas:
- *        Update:
  *            type: object
  *            properties:
  *                type:
