@@ -14,6 +14,12 @@ exports.deleteRolePermission = async (rolePermissionData) => {
     );
   };
 
+  exports.getByIdRolePermission = async (rolePermissionData) => {
+    return QueryDB(
+      'select * from roles_permission where user_type_id = ? AND permission_id = ?' , [rolePermissionData.user_type_id, rolePermissionData.permission_id]
+    );
+  };
+
 exports.createRolePermission = async (rolePermissionData) => {
   const { user_type_id, permission_id} =
   rolePermissionData;

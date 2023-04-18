@@ -8,9 +8,9 @@ dotenv.config();
 
 const routeCheck = {
   'GET':'1',
+  'POST':'5',
   'PUT':'2',
   'DELETE':'3',
-  'POST':'5',
 }
 
 module.exports = function checkPermission(req,res,next) {

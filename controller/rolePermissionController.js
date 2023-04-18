@@ -77,19 +77,30 @@ const { SendMail } = require('../utils/SendMail');
 
 exports.create = async (req, res) => {
   console.log(" inside create ")
-  const resp = await rolePermissionModel.createRolePermission(req.body);
-  console.log('Model result :', resp);
-  if (!resp)
-    return res.status(HTTPCodes.NOT_FOUND).json({
+  const alreadyExists = await rolePermissionModel.getByIdRolePermission(req.body);
+  if (alreadyExists.length === 0)
+    {
+      const resp = await rolePermissionModel.createRolePermission(req.body);
+      console.log('Model result :', resp);
+      if (!resp)
+      return res.status(HTTPCodes.NOT_FOUND).json({
       status: 'success',
       message: 'User not found with this email.',
-    })
-    else if(resp.affectedRows == 1){
+      })
+      else if(resp.affectedRows == 1){
       return res.status(HTTPCodes.OK).json({
         status: 'success',
         message: 'Perrmision has been Created',
       })
+      }
     }
+    else{
+      return res.status(HTTPCodes.OK).json({
+        status: 'success',
+        message: 'Perrmision Already Exists',
+      })
+    }
+  
 };
 
 exports.get = async (req, res) => {
