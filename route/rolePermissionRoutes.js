@@ -5,22 +5,22 @@ const rolePermissionRouter = express.Router();
 
 /**
  * @swagger
- * /user/createRole:
+ * /rolePermission/create:
  *  post:
- *      summary: create Role
+ *      summary: create Role Permission
  *      tags:
- *          - Roles API
- *      description: This api will create role
+ *          - Roles Permission API
+ *      description: This api will create role permission
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                   schema:
- *                       $ref: '#components/schemas/Roles'
+ *                       $ref: '#components/schemas/Role_Permission'
  *
  *      responses:
  *          200:
- *              description:    Role is created successfully
+ *              description:    Role permission is created successfully
  *          400:
  *              description:    Bad request
  *          404:
@@ -36,16 +36,16 @@ rolePermissionRouter.post(
 
 /**
  * @swagger
- * /user/getAllRoles:
+ * /rolePermission/all:
  *  get:
  *      summary: get all roles
  *      tags:
- *          - Roles API
+ *          - Roles Permission API
  *      description: This api will get all roles
  *      content:
  *         application/json:
  *              schema:
- *              $ref: '#components/schemas/Roles'
+ *              $ref: '#components/schemas/Role_Permission'
  *
  *      responses:
  *          200:
@@ -65,11 +65,11 @@ rolePermissionRouter.get(
 
 /**
  * @swagger
- * /user/getRoleById/{id}:
+ * /rolePermission/{id}:
  *  get:
  *      summary: get single role
  *      tags:
- *          - Roles API
+ *          - Roles Permission API
  *      description: This api will get role of a user
  *      parameters:
  *          - in: path
@@ -94,17 +94,18 @@ rolePermissionRouter.get(
   rolePermissionController.getRolePermissionbyId
 );
 
-rolePermissionRouter.get(
-  '/user-type/:userType',
-  rolePermissionController.getRolePermissionByUserType
-);
+// rolePermissionRouter.get(
+//   '/user-type/:userType',
+//   rolePermissionController.getRolePermissionByUserType
+// );
+
 /**
  * @swagger
- * /user/updateRole/{id}:
+ * /rolePermission/{id}:
  *  put:
  *      summary: update Role
  *      tags:
- *          - Roles API
+ *          - Roles Permission API
  *      description: This api will update role
  *      parameters:
  *          - in: path
@@ -113,6 +114,12 @@ rolePermissionRouter.get(
  *            description: Numeric ID required
  *            schema:
  *              type: integer
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                   schema:
+ *                       $ref: '#components/schemas/Role_Permission'
  *
  *      responses:
  *          200:
@@ -127,6 +134,32 @@ rolePermissionRouter.get(
 
 rolePermissionRouter.put('/:id', rolePermissionController.updateRolePermission);
 
+/**
+ * @swagger
+ * /rolePermission/{id}:
+ *  delete:
+ *      summary: Delete User
+ *      description: this api is used to delete user data from database
+ *      tags:
+ *          - Roles Permission API
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            description: Numeric ID required
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description:    Role is deleted successfully
+ *          400:
+ *              description:    Bad request
+ *          404:
+ *              description:    Server does not found resource
+ *          500:
+ *              description:    Internal Server Error
+ */
+
 rolePermissionRouter.delete(
   '/:id',
   rolePermissionController.deleteRolePermission
@@ -140,13 +173,13 @@ module.exports = rolePermissionRouter;
  * @swagger
  * components:
  *    schemas:
- *        Roles:
+ *        Role_Permission:
  *            type: object
  *            properties:
- *                id:
+ *                userType:
  *                    type: integer
- *                    example: "ID will be number"
- *                type:
- *                    type: string
  *                    example: "enter user type e.g admin/users/member/staff"
+ *                permissionId:
+ *                    type: integer
+ *                    example: "enter permission id (must be digit)"
  */
