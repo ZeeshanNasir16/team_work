@@ -7,10 +7,10 @@ const QueryDB = require('../config/db_Config');
 dotenv.config();
 
 const routeCheck = {
-  'GET':'1',
-  'POST':'5',
-  'PUT':'2',
-  'DELETE':'3',
+  'POST':'1',
+  'GET':'2',
+  'PUT':'3',
+  'DELETE':'4'
 }
 
 module.exports = function checkPermission(req,res,next) {
