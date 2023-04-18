@@ -25,8 +25,6 @@ const { signToken } = require('../utils/createToken.js');
  * @swagger
  * /users/login:
  *  post:
- *      tags:
- *        - auth
  *      summary: Login Admin
  *      description: This api will login user
  *      requestBody:
