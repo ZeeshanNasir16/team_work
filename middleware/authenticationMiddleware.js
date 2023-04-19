@@ -1,18 +1,19 @@
-const jwt =  require('jsonwebtoken');
-const dotenv = require("dotenv");
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 const HTTPCodes = require('../utils/responses');
 const logger = require('../utils/logger.js');
 
 dotenv.config();
 
-module.exports = function verifyToken(req,res,next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) {
-        res.status(HTTPCodes.NOT_AUTHORIZED).
-        json({message: 'You are not authorized'});
-    }
-    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+module.exports = function verifyToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) {
+    res
+      .status(HTTPCodes.NOT_AUTHORIZED)
+      .json({ message: 'You are not authorized' });
+  }
+  jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
         logger.info("error: ", err)
         logger.info("decoded: ", decoded)
         if(!err){
@@ -31,6 +32,5 @@ module.exports = function verifyToken(req,res,next) {
         json({message: 'You are Not authorized'});
       }      
       });
-}
-
+};
 
