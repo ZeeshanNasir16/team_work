@@ -1,26 +1,25 @@
 const express = require('express');
-// const roleController = require('../controller/roleController');
-const rolePermissionController = require('../controller/rolePermissionController');
-const rolePermissionRouter = express.Router();
+const roleController = require('../controller/roleController');
+const roleRouter = express.Router();
 
 /**
  * @swagger
- * /rolePermission/create:
+ * /roles/createRole:
  *  post:
- *      summary: create Role Permission
+ *      summary: create Role
  *      tags:
- *          - Roles Permission API
- *      description: This api will create role permission
+ *          - Roles API
+ *      description: This api will create role
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                   schema:
- *                       $ref: '#components/schemas/Role_Permission'
+ *                       $ref: '#components/schemas/Roles'
  *
  *      responses:
  *          200:
- *              description:    Role permission is created successfully
+ *              description:    Role is created successfully
  *          400:
  *              description:    Bad request
  *          404:
@@ -29,23 +28,20 @@ const rolePermissionRouter = express.Router();
  *              description:    Internal Server Error
  */
 
-rolePermissionRouter.post(
-  '/create',
-  rolePermissionController.createRolePermission
-);
+roleRouter.post('/createRole', roleController.createRole);
 
 /**
  * @swagger
- * /rolePermission/all:
+ * /roles/getAllRoles:
  *  get:
  *      summary: get all roles
  *      tags:
- *          - Roles Permission API
+ *          - Roles API
  *      description: This api will get all roles
  *      content:
  *         application/json:
  *              schema:
- *              $ref: '#components/schemas/Role_Permission'
+ *              $ref: '#components/schemas/Roles'
  *
  *      responses:
  *          200:
@@ -58,18 +54,15 @@ rolePermissionRouter.post(
  *              description:    Internal Server Error
  */
 
-rolePermissionRouter.get(
-  '/all',
-  rolePermissionController.getAllRolePermissions
-);
+roleRouter.get('/getAllRoles', roleController.getAllRoles);
 
 /**
  * @swagger
- * /rolePermission/{id}:
+ * /roles/getRoleById/{id}:
  *  get:
  *      summary: get single role
  *      tags:
- *          - Roles Permission API
+ *          - Roles API
  *      description: This api will get role of a user
  *      parameters:
  *          - in: path
@@ -89,23 +82,15 @@ rolePermissionRouter.get(
  *              description:    Internal Server Error
  */
 
-rolePermissionRouter.get(
-  '/:id',
-  rolePermissionController.getRolePermissionbyId
-);
-
-// rolePermissionRouter.get(
-//   '/user-type/:userType',
-//   rolePermissionController.getRolePermissionByUserType
-// );
+roleRouter.get('/getRoleById/:id', roleController.getRolebyId);
 
 /**
  * @swagger
- * /rolePermission/{id}:
+ * /roles/updateRole/{id}:
  *  put:
  *      summary: update Role
  *      tags:
- *          - Roles Permission API
+ *          - Roles API
  *      description: This api will update role
  *      parameters:
  *          - in: path
@@ -114,12 +99,14 @@ rolePermissionRouter.get(
  *            description: Numeric ID required
  *            schema:
  *              type: integer
+ *
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                   schema:
- *                       $ref: '#components/schemas/Role_Permission'
+ *                       $ref: '#components/schemas/Roles'
+ *
  *      responses:
  *          200:
  *              description:    Role is updated successfully
@@ -131,16 +118,16 @@ rolePermissionRouter.get(
  *              description:    Internal Server Error
  */
 
-rolePermissionRouter.put('/:id', rolePermissionController.updateRolePermission);
+roleRouter.put('/updateRole/:id', roleController.updateRole);
 
 /**
  * @swagger
- * /rolePermission/{id}:
+ * /roles/deleteRole/{id}:
  *  delete:
  *      summary: Delete User
  *      description: this api is used to delete user data from database
  *      tags:
- *          - Roles Permission API
+ *          - Roles API
  *      parameters:
  *          - in: path
  *            name: id
@@ -159,12 +146,9 @@ rolePermissionRouter.put('/:id', rolePermissionController.updateRolePermission);
  *              description:    Internal Server Error
  */
 
-rolePermissionRouter.delete(
-  '/:id',
-  rolePermissionController.deleteRolePermission
-);
+roleRouter.delete('/deleteRole/:id', roleController.deleteRole);
 
-module.exports = rolePermissionRouter;
+module.exports = roleRouter;
 
 /*************************Swagger Schema*************************** */
 
@@ -172,13 +156,10 @@ module.exports = rolePermissionRouter;
  * @swagger
  * components:
  *    schemas:
- *        Role_Permission:
+ *        Roles:
  *            type: object
  *            properties:
- *                userType:
- *                    type: integer
+ *                type:
+ *                    type: string
  *                    example: "enter user type e.g admin/users/member/staff"
- *                permissionId:
- *                    type: integer
- *                    example: "enter permission id (must be digit)"
  */

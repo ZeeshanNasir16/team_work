@@ -13,6 +13,7 @@ const AppError = require('./utils/appError');
 const userRoutes = require('./route/userRoutes.js');
 const rolePermissionRoutes = require('./route/rolePermissionRoutes');
 const permRoutes = require('./route/permissionRoutes.js');
+const roleRoutes = require('./route/roleRoutes');
 
 /**********************POST API ************************** */
 app.use(express.json());

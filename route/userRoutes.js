@@ -10,14 +10,41 @@ const checkPermission = require('../middleware/checkPermission');
 const rolePermissioncontroller = require('../controller/rolePermissionController');
 const userRouter = express.Router();
 
- userRouter.post('/login',validationMiddleware(loginSchema),adminController.adminLogin);
-// userRouter.post('/createUser',verifyToken,validation.signupValidation,userController.signUpUser);
-// userRouter.post('/register',validation.signupValidation,userController.signUpUser);
+userRouter.post(
+  '/login',
+  validationMiddleware(loginSchema),
+  adminController.adminLogin
+);
+userRouter.post(
+  '/createUser',
+  verifyToken,
+  validation.signupValidation,
+  userController.signUpUser
+);
+userRouter.post(
+  '/register',
+  validation.signupValidation,
+  userController.signUpUser
+);
 
-userRouter.post('/createRolePermission', verifyToken, checkPermission, rolePermissioncontroller.create);
-userRouter.get('/getRolePermission', verifyToken, checkPermission, rolePermissioncontroller.get);
-userRouter.delete('/deleteRolePermission', verifyToken, checkPermission, rolePermissioncontroller.delete);
-
+userRouter.post(
+  '/createRolePermission',
+  verifyToken,
+  checkPermission,
+  rolePermissioncontroller.createRolePermission
+);
+userRouter.get(
+  '/getRolePermission',
+  verifyToken,
+  checkPermission,
+  rolePermissioncontroller.getAllRolePermissions
+);
+userRouter.delete(
+  '/deleteRolePermission',
+  verifyToken,
+  checkPermission,
+  rolePermissioncontroller.deleteRolePermission
+);
 
 userRouter.get('/getUsers', userController.getUsers);
 userRouter.get('/getUserById/:userId', userController.getSingleUser);

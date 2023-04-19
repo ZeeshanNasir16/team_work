@@ -9,86 +9,58 @@ const logger = require('../utils/logger');
 const HTTPCodes = require('../utils/responses');
 const { SendMail } = require('../utils/SendMail');
 
-exports.create = async (req, res) => {
-  console.log(" inside create ")
-  const alreadyExists = await rolePermissionModel.getByIdRolePermission(req.body);
-  if (alreadyExists.length === 0)
-    {
-      const resp = await rolePermissionModel.createRolePermission(req.body);
-      console.log('Model result :', resp);
-      if (!resp)
-      return res.status(HTTPCodes.NOT_FOUND).json({
-      status: 'success',
-      message: 'User not found with this email.',
-      })
-      else if(resp.affectedRows == 1){
-      return res.status(HTTPCodes.OK).json({
-        status: 'success',
-        message: 'Perrmision has been Created',
-      })
-      }
-    }
-    else{
-      return res.status(HTTPCodes.OK).json({
-        status: 'success',
-        message: 'Perrmision Already Exists',
-      })
-    }
-  
-};
-
-exports.get = async (req, res) => {
-    console.log(" inside get ")
-    const resp = await rolePermissionModel.getRolePermission();
-    console.log('Model result :', resp);
-  if (!resp)
-    return res.status(HTTPCodes.NOT_FOUND).json({
-      status: 'success',
-      message: 'User not found with this email.',
-    })
-    else if(resp.affectedRows == 1){
-      return res.status(HTTPCodes.OK).json({
-        status: 'success',
-        message: 'Perrmision has been Created',
-      })
-    }else{
-      return res.status(HTTPCodes.OK).json(resp)
-    }
-};
-
-exports.delete = async (req, res) => {
-    console.log(" inside delete ")
-    const resp = await rolePermissionModel.deleteRolePermission(req.body);
-    console.log('Model result :', resp);
-  if (!resp)
-    return res.status(HTTPCodes.NOT_FOUND).json({
-      status: 'success',
-      message: 'User not found with this email.',
-    })
-    else if(resp.affectedRows == 1){
-      return res.status(HTTPCodes.OK).json({
-        status: 'success',
-        message: ' Permission has been deleted ',
-      })
-    }else{
-      return res.status(HTTPCodes.OK).json(resp)
-    }
-    
 exports.createRolePermission = async (req, res) => {
-  const { userType, permissionId } = req.body;
-  try {
-    await rolePermissionModel.createRolePermission(userType, permissionId);
-    res.status(200).json({
+  const alreadyExists = await rolePermissionModel.getByIdRolePermission(
+    req.body
+  );
+  if (alreadyExists.length === 0) {
+    const resp = await rolePermissionModel.createRolePermission(req.body);
+
+    if (!resp)
+      return res.status(HTTPCodes.NOT_FOUND).json({
+        status: 'success',
+        message: 'User not found with this email.',
+      });
+    else if (resp.affectedRows == 1)
+      return res.status(HTTPCodes.OK).json({
+        status: 'success',
+        message: 'Perrmision has been Created',
+      });
+  } else
+    return res.status(HTTPCodes.OK).json({
       status: 'success',
-      message: 'Role permission is created',
+      message: 'Perrmision Already Exists',
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: 'Error in createRolePermission',
-      errMsg: error,
+};
+
+// exports.getRolePermissions = async (req, res) => {
+//   const resp = await rolePermissionModel.getRolePermission();
+//   if (!resp)
+//     return res.status(HTTPCodes.NOT_FOUND).json({
+//       status: 'success',
+//       message: 'User not found with this email.',
+//     });
+//   else if (resp.affectedRows == 1)
+//     return res.status(HTTPCodes.OK).json({
+//       status: 'success',
+//       message: 'Perrmision has been Created',
+//     });
+//   else return res.status(HTTPCodes.OK).json(resp);
+// };
+
+exports.deleteRolePermission = async (req, res) => {
+  const resp = await rolePermissionModel.deleteRolePermission(req.body);
+  if (!resp)
+    return res.status(HTTPCodes.NOT_FOUND).json({
+      status: 'success',
+      message: 'User not found with this email.',
     });
-  }
+  else if (resp.affectedRows == 1)
+    return res.status(HTTPCodes.OK).json({
+      status: 'success',
+      message: ' Permission has been deleted ',
+    });
+  else return res.status(HTTPCodes.OK).json(resp);
 };
 
 exports.getAllRolePermissions = async (req, res) => {
@@ -171,26 +143,6 @@ exports.updateRolePermission = async (req, res) => {
     res.status(400).json({
       status: 'fail',
       message: 'Error in updating Role Permissions',
-      errMsg: error,
-    });
-  }
-};
-
-exports.deleteRolePermission = async (req, res) => {
-  const rolePermissionId = req.params.id;
-  try {
-    const results = await rolePermissionModel.deleteRolePermission(
-      rolePermissionId
-    );
-    res.status(200).json({
-      status: 'success',
-      message: 'Delete Role Permission by ID',
-      Permissions: results,
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: 'Error in Deleting Role permission',
       errMsg: error,
     });
   }
