@@ -121,6 +121,13 @@ rolePermissionRouter.get(
  *                   schema:
  *                       $ref: '#components/schemas/Role_Permission'
  *
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                   schema:
+ *                       $ref: '#components/schemas/Roles'
+ *
  *      responses:
  *          200:
  *              description:    Role is updated successfully
