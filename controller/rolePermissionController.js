@@ -9,9 +9,12 @@ const logger = require('../utils/logger');
 const HTTPCodes = require('../utils/responses');
 const { SendMail } = require('../utils/SendMail');
 
+
 exports.createRolePermission = async (req, res) => {
+  console.log("inside create role permission ")
   const alreadyExists = await rolePermissionModel.getByIdRolePermission(
-    req.body
+    req.body.user_type_id,
+    req.body.permission_id
   );
   if (alreadyExists.length === 0) {
     const resp = await rolePermissionModel.createRolePermission(req.body);
@@ -81,10 +84,10 @@ exports.getAllRolePermissions = async (req, res) => {
 };
 
 exports.getRolePermissionbyId = async (req, res) => {
-  const rolePermissionId = req.params.id;
+  const userId = req.params.id;
   try {
     const results = await rolePermissionModel.getRolePermissionById(
-      rolePermissionId
+      userId
     );
     res.status(200).json({
       status: 'success',
@@ -121,24 +124,37 @@ exports.getRolePermissionByUserType = async (req, res) => {
 };
 
 exports.updateRolePermission = async (req, res) => {
-  const rolePermissionId = req.params.id;
-  const { userType, permissionId } = req.body;
+  const { user_type_id, permission_id, new_permission_id} = req.body;
   try {
-    const results = await rolePermissionModel.updateRolePermission(
-      userType,
-      permissionId,
-      rolePermissionId
+    const alreadyExists = await rolePermissionModel.getByIdRolePermission(
+      user_type_id,
+      new_permission_id
     );
-    if (results.affectedRows === 0) {
-      res.status(400).json({
-        status: 'fail',
-        message: 'Role Permission not found',
+    console.log("length ",alreadyExists.length)
+    if(alreadyExists.length === 0){
+      const results = await rolePermissionModel.updateRolePermission(
+        user_type_id,
+        permission_id,
+        new_permission_id
+      );
+      if (results.affectedRows === 0) {
+        res.status(400).json({
+          status: 'fail',
+          message: 'Role Permission not found',
+        });
+      }
+      res.status(200).json({
+        status: 'success',
+        message: 'Role Permission is updated',
+      });
+      
+    }else{
+      res.status(404).json({
+        status: 'Alrady exists',
+        message: 'Permission Already Exists',
       });
     }
-    res.status(200).json({
-      status: 'success',
-      message: 'Role Permission is updated',
-    });
+    
   } catch (error) {
     res.status(400).json({
       status: 'fail',
