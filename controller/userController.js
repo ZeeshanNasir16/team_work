@@ -117,6 +117,8 @@ exports.signUpUser = async (req, res) => {
  *    summary: Getting all users
  *    tags:
  *      - Users (CRUD)
+ *    security:
+ *      - bearerAuth: []
  *    description: this api will get all user data
  *    responses:
  *         200:
@@ -144,6 +146,8 @@ exports.getUsers = catchAsync(async (req, res) => {
  *    summary: Getting selected user
  *    tags:
  *      - Users (CRUD)
+ *    security:
+ *      - bearerAuth: []
  *    description: this api will get selected user
  *    parameters:
  *        - in: path
@@ -177,6 +181,8 @@ exports.getSingleUser = catchAsync(async (req, res) => {
  *    summary: Delete User
  *    tags:
  *      - Users (CRUD)
+ *    security:
+ *      - bearerAuth: []
  *    description: this api will delete selected user
  *    parameters:
  *        - in: path
@@ -206,6 +212,8 @@ exports.deleteUser = catchAsync(async (req, res) => {
  *    summary: Update User
  *    tags:
  *      - Users (CRUD)
+ *    security:
+ *      - bearerAuth: []
  *    description: this api will update selected user
  *    parameters:
  *        - in: path

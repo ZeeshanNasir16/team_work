@@ -46,9 +46,29 @@ userRouter.delete(
   rolePermissioncontroller.deleteRolePermission
 );
 
-userRouter.get('/getUsers', userController.getUsers);
-userRouter.get('/getUserById/:userId', userController.getSingleUser);
-userRouter.delete('/deleteUser/:userId', userController.deleteUser);
-userRouter.patch('/updateUser/:userId', userController.updateUser);
+userRouter.get(
+  '/getUsers',
+  verifyToken,
+  checkPermission,
+  userController.getUsers
+);
+userRouter.get(
+  '/getUserById/:userId',
+  verifyToken,
+  checkPermission,
+  userController.getSingleUser
+);
+userRouter.delete(
+  '/deleteUser/:userId',
+  verifyToken,
+  checkPermission,
+  userController.deleteUser
+);
+userRouter.patch(
+  '/updateUser/:userId',
+  verifyToken,
+  checkPermission,
+  userController.updateUser
+);
 
 module.exports = userRouter;
