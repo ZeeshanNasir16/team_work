@@ -1,6 +1,8 @@
 const express = require('express');
 const roleController = require('../controller/roleController');
 const roleRouter = express.Router();
+const verifyToken = require('../middleware/authenticationMiddleware');
+const checkPermission = require('../middleware/checkPermission');
 
 /**
  * @swagger
@@ -9,6 +11,8 @@ const roleRouter = express.Router();
  *      summary: create Role
  *      tags:
  *          - Roles API
+ *      security:
+ *        - bearerAuth: []
  *      description: This api will create role
  *      requestBody:
  *          required: true
@@ -28,7 +32,12 @@ const roleRouter = express.Router();
  *              description:    Internal Server Error
  */
 
-roleRouter.post('/createRole', roleController.createRole);
+roleRouter.post(
+  '/createRole',
+  verifyToken,
+  checkPermission,
+  roleController.createRole
+);
 
 /**
  * @swagger
@@ -37,6 +46,8 @@ roleRouter.post('/createRole', roleController.createRole);
  *      summary: get all roles
  *      tags:
  *          - Roles API
+ *      security:
+ *        - bearerAuth: []
  *      description: This api will get all roles
  *      content:
  *         application/json:
@@ -54,7 +65,12 @@ roleRouter.post('/createRole', roleController.createRole);
  *              description:    Internal Server Error
  */
 
-roleRouter.get('/getAllRoles', roleController.getAllRoles);
+roleRouter.get(
+  '/getAllRoles',
+  verifyToken,
+  checkPermission,
+  roleController.getAllRoles
+);
 
 /**
  * @swagger
@@ -63,6 +79,8 @@ roleRouter.get('/getAllRoles', roleController.getAllRoles);
  *      summary: get single role
  *      tags:
  *          - Roles API
+ *      security:
+ *        - bearerAuth: []
  *      description: This api will get role of a user
  *      parameters:
  *          - in: path
@@ -82,7 +100,12 @@ roleRouter.get('/getAllRoles', roleController.getAllRoles);
  *              description:    Internal Server Error
  */
 
-roleRouter.get('/getRoleById/:id', roleController.getRolebyId);
+roleRouter.get(
+  '/getRoleById/:id',
+  verifyToken,
+  checkPermission,
+  roleController.getRolebyId
+);
 
 /**
  * @swagger
@@ -91,6 +114,8 @@ roleRouter.get('/getRoleById/:id', roleController.getRolebyId);
  *      summary: update Role
  *      tags:
  *          - Roles API
+ *      security:
+ *        - bearerAuth: []
  *      description: This api will update role
  *      parameters:
  *          - in: path
@@ -118,7 +143,12 @@ roleRouter.get('/getRoleById/:id', roleController.getRolebyId);
  *              description:    Internal Server Error
  */
 
-roleRouter.put('/updateRole/:id', roleController.updateRole);
+roleRouter.put(
+  '/updateRole/:id',
+  verifyToken,
+  checkPermission,
+  roleController.updateRole
+);
 
 /**
  * @swagger
@@ -128,6 +158,8 @@ roleRouter.put('/updateRole/:id', roleController.updateRole);
  *      description: this api is used to delete user data from database
  *      tags:
  *          - Roles API
+ *      security:
+ *        - bearerAuth: []
  *      parameters:
  *          - in: path
  *            name: id
@@ -146,7 +178,12 @@ roleRouter.put('/updateRole/:id', roleController.updateRole);
  *              description:    Internal Server Error
  */
 
-roleRouter.delete('/deleteRole/:id', roleController.deleteRole);
+roleRouter.delete(
+  '/deleteRole/:id',
+  verifyToken,
+  checkPermission,
+  roleController.deleteRole
+);
 
 module.exports = roleRouter;
 
