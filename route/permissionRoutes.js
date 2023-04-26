@@ -6,6 +6,8 @@ const {
   deletePermission,
 } = require('../controller/permissionController');
 const permRouter = express.Router();
+const verifyToken = require('../middleware/authenticationMiddleware');
+const checkPermission = require('../middleware/checkPermission');
 
 /**
  * @swagger
@@ -14,6 +16,8 @@ const permRouter = express.Router();
  *      summary: create permission
  *      tags:
  *          - Permissions
+ *      security:
+ *          - bearerAuth: []
  *      description: This api will create permission
  *      requestBody:
  *          required: true
@@ -28,7 +32,7 @@ const permRouter = express.Router();
  *          500:
  *              description:    Internal Server Error
  */
-permRouter.post('/', createPermission);
+permRouter.post('/', verifyToken, checkPermission, createPermission);
 
 /**
  * @swagger
@@ -37,6 +41,8 @@ permRouter.post('/', createPermission);
  *      summary: get all permissions
  *      tags:
  *          - Permissions
+ *      security:
+ *          - bearerAuth: []
  *      description: This api will get all permissions
  *      content:
  *         application/json:
@@ -61,6 +67,8 @@ permRouter.get('/', getPermissions);
  *      tags:
  *          - Permissions
  *      description: This api will update permission
+ *      security:
+ *          - bearerAuth: []
  *      requestBody:
  *          required: true
  *          content:
@@ -83,7 +91,7 @@ permRouter.get('/', getPermissions);
  *          500:
  *              description:    Internal Server Error
  */
-permRouter.patch('/:id', updatePermission);
+permRouter.patch('/:id', verifyToken, checkPermission, updatePermission);
 
 /**
  * @swagger
@@ -91,6 +99,8 @@ permRouter.patch('/:id', updatePermission);
  *  delete:
  *      summary: Delete permission
  *      description: this api is used to delete specific permission from database
+ *      security:
+ *          - bearerAuth: []
  *      tags:
  *          - Permissions
  *      parameters:
@@ -108,7 +118,7 @@ permRouter.patch('/:id', updatePermission);
  *          500:
  *              description:    Internal Server Error
  */
-permRouter.delete('/:id', deletePermission);
+permRouter.delete('/:id', verifyToken, checkPermission, deletePermission);
 
 /*************************Swagger Schema*************************** */
 
