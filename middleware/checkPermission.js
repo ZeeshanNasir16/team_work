@@ -51,7 +51,7 @@ module.exports = function checkPermission(req, res, next) {
     .catch((err) => {
       console.log('inside false');
       console.log('error is :', err);
-      res
+      return res
         .status(HTTPCodes.NOT_AUTHORIZED)
         .json({ message: 'You did not have permission ' });
     });
