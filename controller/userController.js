@@ -117,6 +117,8 @@ exports.signUpUser = async (req, res) => {
  *    summary: Getting all users
  *    tags:
  *      - Users (CRUD)
+ *    security:
+ *      - bearerAuth: []
  *    description: this api will get all user data
  *    responses:
  *         200:
@@ -144,6 +146,8 @@ exports.getUsers = catchAsync(async (req, res) => {
  *    summary: Getting selected user
  *    tags:
  *      - Users (CRUD)
+ *    security:
+ *      - bearerAuth: []
  *    description: this api will get selected user
  *    parameters:
  *        - in: path
@@ -177,6 +181,8 @@ exports.getSingleUser = catchAsync(async (req, res) => {
  *    summary: Delete User
  *    tags:
  *      - Users (CRUD)
+ *    security:
+ *      - bearerAuth: []
  *    description: this api will delete selected user
  *    parameters:
  *        - in: path
@@ -193,7 +199,7 @@ exports.getSingleUser = catchAsync(async (req, res) => {
 exports.deleteUser = catchAsync(async (req, res) => {
   const result = await UserModel.deleteUser(req.params.userId);
   if (result.affectedRows > 0) {
-    res.json({ success: true, payload: result });
+    res.json({ success: true, message: 'Record has been deleted..' });
   } else {
     res.json({ success: false, message: 'user does not exist.' });
   }
@@ -206,6 +212,8 @@ exports.deleteUser = catchAsync(async (req, res) => {
  *    summary: Update User
  *    tags:
  *      - Users (CRUD)
+ *    security:
+ *      - bearerAuth: []
  *    description: this api will update selected user
  *    parameters:
  *        - in: path
@@ -232,5 +240,12 @@ exports.deleteUser = catchAsync(async (req, res) => {
 exports.updateUser = catchAsync(async (req, res) => {
   const result = await UserModel.updateUser(req.body, req.params.userId);
 
-  res.json({ success: true, payload: result });
+  if (result.affectedRows > 0) {
+    res.json({ success: true, message: 'User updated...' });
+  } else {
+    res.json({
+      success: false,
+      message: 'Something went wrong while updating user.',
+    });
+  }
 });
