@@ -27,47 +27,28 @@ userRouter.post(
   userController.signUpUser
 );
 
-userRouter.post(
-  '/createRolePermission',
-  verifyToken,
-  checkPermission,
-  rolePermissioncontroller.createRolePermission
-);
-userRouter.get(
-  '/getRolePermission',
-  verifyToken,
-  checkPermission,
-  rolePermissioncontroller.getAllRolePermissions
-);
-userRouter.delete(
-  '/deleteRolePermission',
-  verifyToken,
-  checkPermission,
-  rolePermissioncontroller.deleteRolePermission
-);
-
 userRouter.get(
   '/getUsers',
   verifyToken,
-  checkPermission,
+  checkPermission('view'),
   userController.getUsers
 );
 userRouter.get(
   '/getUserById/:userId',
   verifyToken,
-  checkPermission,
+  checkPermission('view'),
   userController.getSingleUser
 );
 userRouter.delete(
   '/deleteUser/:userId',
   verifyToken,
-  checkPermission,
+  checkPermission('delete'),
   userController.deleteUser
 );
 userRouter.patch(
   '/updateUser/:userId',
   verifyToken,
-  checkPermission,
+  checkPermission('update'),
   userController.updateUser
 );
 

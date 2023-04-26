@@ -2,9 +2,8 @@ const express = require('express');
 // const roleController = require('../controller/roleController');
 const rolePermissionController = require('../controller/rolePermissionController');
 const rolePermissionRouter = express.Router();
-const verifyToken = require('../middleware/authenticationMiddleware')
-const checkPermission = require('../middleware/checkPermission')
-
+const verifyToken = require('../middleware/authenticationMiddleware');
+const checkPermission = require('../middleware/checkPermission');
 
 /**
  * @swagger
@@ -37,7 +36,7 @@ const checkPermission = require('../middleware/checkPermission')
 rolePermissionRouter.post(
   '/create',
   verifyToken,
-  checkPermission,
+  checkPermission('create'),
   rolePermissionController.createRolePermission
 );
 
@@ -70,7 +69,7 @@ rolePermissionRouter.post(
 rolePermissionRouter.get(
   '/all',
   verifyToken,
-  checkPermission,
+  checkPermission('view'),
   rolePermissionController.getAllRolePermissions
 );
 
@@ -105,7 +104,7 @@ rolePermissionRouter.get(
 rolePermissionRouter.get(
   '/:id',
   verifyToken,
-  checkPermission,
+  checkPermission('view'),
   rolePermissionController.getRolePermissionbyId
 );
 
@@ -124,7 +123,7 @@ rolePermissionRouter.get(
  *      security:
  *        - bearerAuth: []
  *      description: This api will update role
- *      
+ *
  *      requestBody:
  *          required: true
  *          content:
@@ -142,8 +141,12 @@ rolePermissionRouter.get(
  *              description:    Internal Server Error
  */
 
-rolePermissionRouter.put('/update',verifyToken,
-checkPermission, rolePermissionController.updateRolePermission);
+rolePermissionRouter.put(
+  '/update',
+  verifyToken,
+  checkPermission('update'),
+  rolePermissionController.updateRolePermission
+);
 
 /**
  * @swagger
@@ -175,7 +178,7 @@ checkPermission, rolePermissionController.updateRolePermission);
 rolePermissionRouter.delete(
   '/delete',
   verifyToken,
-  checkPermission,
+  checkPermission('delete'),
   rolePermissionController.deleteRolePermission
 );
 
@@ -197,7 +200,7 @@ module.exports = rolePermissionRouter;
  *                    type: integer
  *                    example: "enter permission id (must be digit)"
  */
- /**  @swagger
+/**  @swagger
  *  components:
  *    schemas:
  *        Update_Role_Permission:
@@ -212,5 +215,5 @@ module.exports = rolePermissionRouter;
  *                new_permission_id:
  *                    type: integer
  *                    example: "enter permission id (must be digit)"
- *    
+ *
  */

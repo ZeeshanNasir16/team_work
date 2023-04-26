@@ -35,7 +35,7 @@ const checkPermission = require('../middleware/checkPermission');
 roleRouter.post(
   '/createRole',
   verifyToken,
-  checkPermission,
+  checkPermission('create'),
   roleController.createRole
 );
 
@@ -68,7 +68,7 @@ roleRouter.post(
 roleRouter.get(
   '/getAllRoles',
   verifyToken,
-  checkPermission,
+  checkPermission('view'),
   roleController.getAllRoles
 );
 
@@ -103,7 +103,7 @@ roleRouter.get(
 roleRouter.get(
   '/getRoleById/:id',
   verifyToken,
-  checkPermission,
+  checkPermission('view'),
   roleController.getRolebyId
 );
 
@@ -146,7 +146,7 @@ roleRouter.get(
 roleRouter.put(
   '/updateRole/:id',
   verifyToken,
-  checkPermission,
+  checkPermission('update'),
   roleController.updateRole
 );
 
@@ -181,7 +181,7 @@ roleRouter.put(
 roleRouter.delete(
   '/deleteRole/:id',
   verifyToken,
-  checkPermission,
+  checkPermission('delete'),
   roleController.deleteRole
 );
 

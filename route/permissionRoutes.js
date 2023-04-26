@@ -32,7 +32,7 @@ const checkPermission = require('../middleware/checkPermission');
  *          500:
  *              description:    Internal Server Error
  */
-permRouter.post('/', verifyToken, checkPermission, createPermission);
+permRouter.post('/', verifyToken, checkPermission('create'), createPermission);
 
 /**
  * @swagger
@@ -57,7 +57,7 @@ permRouter.post('/', verifyToken, checkPermission, createPermission);
  *          500:
  *              description:    Internal Server Error
  */
-permRouter.get('/', getPermissions);
+permRouter.get('/', verifyToken, checkPermission('view'), getPermissions);
 
 /**
  * @swagger
@@ -91,7 +91,12 @@ permRouter.get('/', getPermissions);
  *          500:
  *              description:    Internal Server Error
  */
-permRouter.patch('/:id', verifyToken, checkPermission, updatePermission);
+permRouter.patch(
+  '/:id',
+  verifyToken,
+  checkPermission('update'),
+  updatePermission
+);
 
 /**
  * @swagger
@@ -118,7 +123,12 @@ permRouter.patch('/:id', verifyToken, checkPermission, updatePermission);
  *          500:
  *              description:    Internal Server Error
  */
-permRouter.delete('/:id', verifyToken, checkPermission, deletePermission);
+permRouter.delete(
+  '/:id',
+  verifyToken,
+  checkPermission('delete'),
+  deletePermission
+);
 
 /*************************Swagger Schema*************************** */
 
