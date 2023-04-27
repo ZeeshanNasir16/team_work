@@ -1,5 +1,5 @@
-const logger = require("../utils/logger");
-const HTTPCodes = require("../utils/responses");
+const logger = require('../utils/logger');
+const HTTPCodes = require('../utils/responses');
 
 module.exports = function validationMiddleware(schema) {
   return async (req, res, next) => {
@@ -15,11 +15,11 @@ module.exports = function validationMiddleware(schema) {
       next();
     } catch (e) {
       const errors = [];
-      console.log(e)
+
       e.details.forEach((error) => {
         errors.push(error.message);
       });
       res.status(HTTPCodes.BAD_REQUEST).send({ errors: errors });
     }
   };
-}
+};

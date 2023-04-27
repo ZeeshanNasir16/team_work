@@ -1,4 +1,7 @@
 const rolePermissionModel = require('../model/rolePermissionModel');
+const roleModel = require('../model/roleModel');
+const permModel = require('../model/permissionModel');
+const AppError = require('../utils/appError');
 
 const {
   signUpSubject: subject,
@@ -9,31 +12,50 @@ const logger = require('../utils/logger');
 const HTTPCodes = require('../utils/responses');
 const { SendMail } = require('../utils/SendMail');
 
+exports.createRolePermission = async (req, res, next) => {
+  try {
+    const alreadyExists = await rolePermissionModel.getByIdRolePermission(
+      req.body.user_type_id,
+      req.body.permission_id
+    );
+    if (alreadyExists.length === 0) {
+      const chkRoleExists = await roleModel.getRoleById(req.body.user_type_id);
 
-exports.createRolePermission = async (req, res) => {
-  console.log("inside create role permission ")
-  const alreadyExists = await rolePermissionModel.getByIdRolePermission(
-    req.body.user_type_id,
-    req.body.permission_id
-  );
-  if (alreadyExists.length === 0) {
-    const resp = await rolePermissionModel.createRolePermission(req.body);
+      if (chkRoleExists.length === 0)
+        return res.status(HTTPCodes.OK).json({
+          status: 'success',
+          message: `No user role exists against the id ${req.body.user_type_id}`,
+        });
 
-    if (!resp)
-      return res.status(HTTPCodes.NOT_FOUND).json({
-        status: 'success',
-        message: 'User not found with this email.',
-      });
-    else if (resp.affectedRows == 1)
+      const chkPermExists = await permModel.getPermissionById(
+        req.body.permission_id
+      );
+
+      if (chkPermExists.length === 0)
+        return res.status(HTTPCodes.OK).json({
+          status: 'success',
+          message: `No permission exists against the id ${req.body.permission_id}`,
+        });
+
+      const resp = await rolePermissionModel.createRolePermission(req.body);
+      if (!resp)
+        return res.status(HTTPCodes.NOT_FOUND).json({
+          status: 'success',
+          message: 'User not found with this email.',
+        });
+      else if (resp.affectedRows == 1)
+        return res.status(HTTPCodes.OK).json({
+          status: 'success',
+          message: 'Perrmision has been Created',
+        });
+    } else
       return res.status(HTTPCodes.OK).json({
         status: 'success',
-        message: 'Perrmision has been Created',
+        message: 'Perrmision Already Exists',
       });
-  } else
-    return res.status(HTTPCodes.OK).json({
-      status: 'success',
-      message: 'Perrmision Already Exists',
-    });
+  } catch (er) {
+    return next(new AppError(HTTPCodes.NOT_FOUND, er));
+  }
 };
 
 // exports.getRolePermissions = async (req, res) => {
@@ -53,17 +75,20 @@ exports.createRolePermission = async (req, res) => {
 
 exports.deleteRolePermission = async (req, res) => {
   const resp = await rolePermissionModel.deleteRolePermission(req.body);
-  if (!resp)
+  try {
+    if (resp.affectedRows >= 1)
+      return res.status(HTTPCodes.OK).json({
+        status: 'success',
+        message: ' Permission has been deleted ',
+      });
+
     return res.status(HTTPCodes.NOT_FOUND).json({
-      status: 'success',
-      message: 'User not found with this email.',
+      status: 'failed',
+      message: 'Either the user role id or permission you provided is invalid',
     });
-  else if (resp.affectedRows == 1)
-    return res.status(HTTPCodes.OK).json({
-      status: 'success',
-      message: ' Permission has been deleted ',
-    });
-  else return res.status(HTTPCodes.OK).json(resp);
+  } catch (er) {
+    return res.status(HTTPCodes.OK).json(er.message);
+  }
 };
 
 exports.getAllRolePermissions = async (req, res) => {
@@ -86,9 +111,7 @@ exports.getAllRolePermissions = async (req, res) => {
 exports.getRolePermissionbyId = async (req, res) => {
   const userId = req.params.id;
   try {
-    const results = await rolePermissionModel.getRolePermissionById(
-      userId
-    );
+    const results = await rolePermissionModel.getRolePermissionById(userId);
     res.status(200).json({
       status: 'success',
       message: 'View Role Permission by ID',
@@ -124,14 +147,13 @@ exports.getRolePermissionByUserType = async (req, res) => {
 };
 
 exports.updateRolePermission = async (req, res) => {
-  const { user_type_id, permission_id, new_permission_id} = req.body;
+  const { user_type_id, permission_id, new_permission_id } = req.body;
   try {
     const alreadyExists = await rolePermissionModel.getByIdRolePermission(
       user_type_id,
       new_permission_id
     );
-    console.log("length ",alreadyExists.length)
-    if(alreadyExists.length === 0){
+    if (alreadyExists.length === 0) {
       const results = await rolePermissionModel.updateRolePermission(
         user_type_id,
         permission_id,
@@ -147,14 +169,12 @@ exports.updateRolePermission = async (req, res) => {
         status: 'success',
         message: 'Role Permission is updated',
       });
-      
-    }else{
+    } else {
       res.status(404).json({
         status: 'Alrady exists',
         message: 'Permission Already Exists',
       });
     }
-    
   } catch (error) {
     res.status(400).json({
       status: 'fail',

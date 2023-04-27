@@ -6,7 +6,6 @@ const logger = require('../utils/logger.js');
 dotenv.config();
 
 module.exports = function verifyToken(req, res, next) {
-  console.log('inside token');
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) {
