@@ -7,6 +7,7 @@ const {
 const catchAsync = require('../utils/catchAsync.js');
 const HTTPCodes = require('../utils/responses.js');
 const AppError = require('../utils/appError.js');
+const { delRolePermByIds } = require('../model/rolePermissionModel');
 
 exports.createPermission = catchAsync(async (req, res, next) => {
   const { permission_name } = req.body;
@@ -55,12 +56,17 @@ exports.updatePermission = catchAsync(async (req, res, next) => {
 
 exports.deletePermission = catchAsync(async (req, res, next) => {
   const result = await deletePermission(req.params.id);
-
-  if (result.affectedRows === 1)
-    return res.status(HTTPCodes.CREATED).json({
-      status: 'success',
-      message: 'Permission deleted Successfully',
-    });
+  if (result.affectedRows >= 1) {
+    const delRolePermResult = await delRolePermByIds(
+      'permission',
+      req.params.id
+    );
+    if (delRolePermResult.affectedRows >= 1)
+      return res.status(HTTPCodes.CREATED).json({
+        status: 'success',
+        message: 'Permission deleted Successfully',
+      });
+  }
 
   return next(
     new AppError(
